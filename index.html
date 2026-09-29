@@ -1,13 +1,5 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Geolocation - WeatherAPI</title>
-</head>
-<body>
 
-    <!-- GANTI DENGAN DATA DIRIMU -->
+
     <h3>Nama : Razzan Ikmal Saputra</h3>
     <h3>NIM  : 20240140192 </h3>
 
@@ -29,65 +21,3 @@
     <p>Longitude : <span id="longitude">-</span></p>
     <p>Latitude : <span id="latitude">-</span></p>
 
-    <script>
-    
-        const API_KEY = "BOZAmJqY1e3w5gzheekF";
-
-        function ambilDataLokasi() {
-            const lokasi = document.getElementById("inputKota").value.trim();
-
-            if (!lokasi) {
-                alert("Harap masukkan nama lokasi!");
-                return;
-            }
-
-            const url = `https://api.maptiler.com/geocoding/${encodeURIComponent(lokasi)}.json?key=${API_KEY}`;
-
-            fetch(url)
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-
-                    if (!data.features || data.features.length === 0) {
-                        alert("Lokasi tidak ditemukan!");
-                        return;
-                    }
-
-                    const item = data.features[0];
-
-                    const lon = item.center[0];
-                    const lat = item.center[1];
-
-                    let negara = "-";
-                    let provinsi = "-";
-                    let kecamatan = "-";
-
-                    // Mengambil detail wilayah dari data context MapTiler
-                    if (item.context) {
-                        item.context.forEach(ctx => {
-                            if (ctx.id.startsWith("country")) {
-                                negara = ctx.text;
-                            } else if (ctx.id.startsWith("region") || ctx.id.startsWith("province")) {
-                                provinsi = ctx.text;
-                            } else if (ctx.id.startsWith("subdistrict") || ctx.id.startsWith("municipality") || ctx.id.startsWith("locality")) {
-                                kecamatan = ctx.text;
-                            }
-                        });
-                    }
-
-                  
-                    document.getElementById("negara").innerText = negara;
-                    document.getElementById("provinsi").innerText = provinsi;
-                    document.getElementById("kecamatan").innerText = kecamatan;
-                    document.getElementById("longitude").innerText = lon;
-                    document.getElementById("latitude").innerText = lat;
-                })
-                .catch(error => {
-                    console.error(error);
-                    alert("Terjadi kesalahan saat memanggil API!");
-                });
-        }
-    </script>
-
-</body>
-</html>
